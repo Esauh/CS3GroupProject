@@ -109,7 +109,7 @@ def home():
     return render_template("home.html", rows=rows)
 
 
-# when edit product option is selected this function is loaded
+# when edit listing option is selected this function is utilized
 @app.route("/edit/<int:pro_id>", methods=["GET", "POST"], endpoint='edit')
 @login_required
 def edit(pro_id):
