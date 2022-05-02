@@ -1,18 +1,104 @@
-{% extends 'base.html' %}
+{% extends "layout.html" %}
 
-{% block head %}
-<title>Smart Auto Online Vehicle Retail System</title>
+{% block title %}
+    Home
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1 style="text-align: center">Update Cars Uploaded Into System</h1>
+	<div class="container" id="topdiv4">
+		<nav class="navbar navbar-light bg-light">
+			<a href="{{ url_for('index')}}"><span class="navbar-brand mb-0 h1">View all Listings</span></a>
+			<a class="btn btn-outline-info my-2 my-sm-0" href="{{url_for('logout')}}">Logout</a>
+		</nav>
+		{% if message %}
+			<div class="alert alert-success" role="alert">
+				{{ message }}
+			</div>
+		{% endif %}
+		<div class="row" id="index1">
+			<div class="col-sm-6">
+				<div class="card">
+      				<div class="card-body">
+        				<h5 class="card-title">Do you want to Add a new Listings?</h5>
+        				<p class="card-text">Listings new automobiles was never this easy.</p>
+        				<button class="btn btn-primary" id="add_new">Click here</button>
+      				</div>
+    			</div>
+  			</div>
+	  		<div class="col-sm-6">
+	    		<div class="card">
+	      			<div class="card-body">
+	        			<h5 class="card-title">Do you want to edit your listings?</h5>
+	        			<p class="card-text">Editing listings was never this easy.</p>
+	        			<button class="btn btn-primary" id="edit">Click here</button>
+	      			</div>
+	    		</div>
+	  		</div>
+		</div>
+		<div class="card w-75" id="topdiv2">
+			<form class="card-body" action="{{ url_for('home') }}" method="POST" enctype="multipart/form-data">
+				<h5 class="card-title">Add New Listings</h5>
+				<div class="form-group">
+	    			<label for="category">Category</label>
+	    			<input type="text" class="form-control" name="category" required autofocus>
+	  			</div>
+				<div class="form-group">
+	    			<label for="category">Status</label>
+	    			<input type="text" class="form-control" name="status" required>
+	  			</div>
 
-    <div class="form">
-        <form action="/update/{{task.id}}" method="POST">
-            <input type="text" name="content" id="content" value="{{task.content}}">
-            <input type="submit" value="Update">
-        </form>
-    </div>
-</div>
+	  			<div class="form-group">
+	    			<label for="category">Make&Model</label>
+	    			<input type="text" class="form-control" name="make_model" required>
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="category">Description</label>
+	    			<input type="text" class="form-control" name="description">
+	  			</div>
+	  			<div class="form-group">
+	  				<label for="price">Price Range</label>
+    				<select class="form-control" name=price_range>
+    					<option value="$1000-$2500">$1000-$2500</option>
+					    <option value="$2500-$5000">$$2500-$5000</option>
+					    <option value="$5000-$10000">$1000-$2000</option>
+					    <option value="$10000-$25000">$5000-$10000</option>
+					    <option value="$25000-$50000">$25000-$50000</option>
+    				</select>
+  				</div>
+	  			<div class="form-group">
+	    			<label for="category">Contact</label>
+	    			<input type="text" class="form-control" name="contact">
+	  			</div>
+	  			<div class="form-group">
+	  				<label for="exampleFormControlFile1">Automobile Image</label>
+	    			<input type="file" class="form-control-file" name="image" accept="image/">
+	  			</div>
+	  			<button type="submit" class="btn btn-primary">Add</button>
+			</form>
+		</div>
+		<div id="topdiv3">
+			{% if rows %}
+				<div class="row">
+					{% for row in rows %}
+						<div class="card needspace" style="width: 18rem;">
+							<img src="{{ url_for('static_dir', path = 'images/'+row.filename) }}" class="card-img-top" alt="...">
+							<div class="card-body">
+			    				<h5 class="card-title">{{row.make_model}}</h5>
+			    				<p class="card-text">{{row.category}}</p>
+								<p class="card-text">{{row.status}}</p>
+			  				</div>
+			  				<ul class="list-group list-group-flush">
+			  					<li class="list-group-item">{{row.description}}</li>
+			    				<li class="list-group-item">Price Range: {{row.price_range}}</li>
+			    				<li class="list-group-item">{{row.contact}}</li>
+			  				</ul>
+			  				<div class="card-body">
+			    				<a href="{{ url_for('edit', pro_id=row.pro_id) }}" class="card-link">Edit Listing</a>
+			  				</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
